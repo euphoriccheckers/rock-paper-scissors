@@ -48,15 +48,18 @@ function playRound (playerSelection, computerSelection) {
         case 'ROCK': {
             switch (computerSelection) {
                 case 'ROCK': {
-                    return 'NOT SURE WHAT TO DO HERE';
+                    console.log('Tie! No one wins');
+                    return null;
                     break;
                 }
                 case 'PAPER': {
-                    return 'You lose! Paper beats Rock';
+                    console.log('You lose! Paper beats Rock');
+                    return false;
                     break;
                 }
                 case 'SCISSORS': {
-                    return 'You win! Rock beats Scissors';
+                    console.log('You win! Rock beats Scissors');
+                    return true;
                     break;
                 }
             }
@@ -65,15 +68,18 @@ function playRound (playerSelection, computerSelection) {
         case 'PAPER': {
             switch (computerSelection) {
                 case 'ROCK': {
-                    return 'You win! Paper beats Rock';
+                    console.log('You win! Paper beats Rock');
+                    return true;
                     break;
                 }
                 case 'PAPER': {
-                    return 'NOT SURE WHAT TO DO HERE';
+                    console.log('Tie! No one wins');
+                    return null;
                     break;
                 }
                 case 'SCISSORS': {
-                    return 'You lose! Scissors beat Paper';
+                    console.log('You lose! Scissors beat Paper');
+                    return false;
                     break;
                 }
             }
@@ -82,18 +88,64 @@ function playRound (playerSelection, computerSelection) {
         case 'SCISSORS': {
             switch (computerSelection) {
                 case 'ROCK': {
-                    return 'You lose! Rock beats Scissors';
+                    console.log('You lose! Rock beats Scissors');
+                    return false;
                     break;
                 }
                 case 'PAPER': {
-                    return 'You win! Scissors beat Paper';
+                    console.log('You win! Scissors beat Paper');
+                    return true;
                     break;
                 }
                 case 'SCISSORS': {
-                    return 'NOT SURE WHAT TO DO HERE';
+                    console.log('Tie! No one wins');
+                    return null;
                     break;
                 }
             }
         }
+    }
+}
+
+//(3)a function that plays 5 rounds of the game and 
+//keeps score and reports a winner or loser at the end
+function game () {
+    //tell player its 5 rounds
+    console.log(`Let's play the best out of 5`)
+    //set playerScore to 0
+    let playerScore = 0;
+    //set computerScore to 0
+    let computerScore = 0;
+    //loop through playRound 5 times
+    for (let i = 0; i < 5; i++) {
+        //get user input
+        let playerSelection = prompt('Rock, Paper, or Scissors?');
+        //get result
+        let winner = playRound(playerSelection, getComputerChoice());
+        //if lose &  not null
+        if ((!winner) && winner !== null) {
+            //add 1 to computer score
+            computerScore++;
+        } //else if winner
+        else if (winner) {
+            //add 1 to player score
+            playerScore++;
+        }
+    }
+
+    //if playerScore > computerScore
+    if (playerScore > computerScore) {
+        //player won the game
+        console.log(`Player: ${playerScore}`, `Computer: ${computerScore}`, `You won the game!`);
+    } else if (playerScore < computerScore) {
+        //player lost the game
+        console.log(`Player: ${playerScore}
+        Computer: ${computerScore}
+        You lost the game :(`);
+    } else {
+        //tied game
+        console.log(`Player: ${playerScore}
+        Computer: ${computerScore}
+        You tied ~`);
     }
 }
