@@ -24,14 +24,14 @@ function getComputerChoice () {
     //if 1
     if (randomNum === 1) {
         //return rock
-        return 'rock';
+        return 'Rock';
     } //else if 2 
     else if (randomNum === 2) {
         //return scissors
-        return 'scissors';
+        return 'Scissors';
     }//else
     else {
         //return paper
-        return 'paper';
+        return 'Paper';
     }
 }
