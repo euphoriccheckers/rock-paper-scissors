@@ -107,9 +107,10 @@ function playRound (playerSelection, computerSelection) {
     }
 }
 
+//validation function, is the input one of the three options?
 function validateInput (playerSelection) {
     playerSelection = playerSelection.toUpperCase();
-    
+
     if (playerSelection === 'ROCK' || playerSelection === 'PAPER'
     || playerSelection === 'SCISSORS') {
         return true;
@@ -134,9 +135,11 @@ function game () {
         //check if user input is valid
         if (!validateInput(playerSelection)) {
             let valid = false;
-
+            //while the input is invalid
             while (!valid) {
+                //keep prompting for a new input
                 playerSelection = prompt('Please pick one of the following:\nRock, Paper, or Scissors?');
+                //update/check if the new input is valid
                 valid = validateInput(playerSelection);
             }
         }
