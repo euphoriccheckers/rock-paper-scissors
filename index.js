@@ -43,7 +43,7 @@ function playRound (playerSelection, computerSelection) {
     //convert both to upper case
     playerSelection = playerSelection.toUpperCase();
     computerSelection = computerSelection.toUpperCase();
-    //compare playerSelection and computerSelection
+    //compare playerSelection and computerSelection and print result
     switch (playerSelection) {
         case 'ROCK': {
             switch (computerSelection) {
@@ -107,6 +107,17 @@ function playRound (playerSelection, computerSelection) {
     }
 }
 
+function validateInput (playerSelection) {
+    playerSelection = playerSelection.toUpperCase();
+    
+    if (playerSelection === 'ROCK' || playerSelection === 'PAPER'
+    || playerSelection === 'SCISSORS') {
+        return true;
+    } else {
+        return false;
+    }
+};
+
 //(3)a function that plays 5 rounds of the game and 
 //keeps score and reports a winner or loser at the end
 function game () {
@@ -120,6 +131,15 @@ function game () {
     for (let i = 0; i < 5; i++) {
         //get user input
         let playerSelection = prompt('Rock, Paper, or Scissors?');
+        //check if user input is valid
+        if (!validateInput(playerSelection)) {
+            let valid = false;
+
+            while (!valid) {
+                playerSelection = prompt('Please pick one of the following:\nRock, Paper, or Scissors?');
+                valid = validateInput(playerSelection);
+            }
+        }
         //get result
         let winner = playRound(playerSelection, getComputerChoice());
         //if lose &  not null
