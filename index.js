@@ -1,25 +1,79 @@
-/* 
-constraints:
-    rock beats scissors
-    scissors beat paper
-    paper beats rock
+//set score variables
+let playerScore = 0;
+let computerScore = 0;
 
-problem:
-    user plays against computer
+//create 3 buttons for each selection
+let rockBtn = document.createElement('button');
+let paperBtn = document.createElement('button');
+let scisBtn = document.createElement('button');
 
-    (1)a function that returns random choices (rock, paper, or scissors)
+//set inner text of buttons
+rockBtn.textContent = 'Rock';
+paperBtn.textContent = 'Paper';
+scisBtn.textContent = 'Scissors';
 
-    (2)a function that plays a round of the game taking in 
-    playerSelection and computerSelection, 
-    returning a string that declares the winner of the round
-        --inputs must be case insensitive
+//create divs for buttons, score, and text
+let btns = document.createElement('div');
+let points = document.createElement('div');
+let results = document.createElement('div');
 
-    (3)a function that plays 5 rounds of the game and keeps score
-    and reports a winner or loser at the end
-*/
+//append buttons to btns div
+btns.appendChild(rockBtn);
+btns.appendChild(paperBtn);
+btns.appendChild(scisBtn);
 
-//(1)
-function getComputerChoice () {
+//append all divs to document body
+document.body.appendChild(btns);
+document.body.appendChild(points);
+document.body.appendChild(results);
+
+
+
+//add event listener that plays game
+btns.addEventListener('click', game);
+
+
+
+//game logic 
+function game (e) {
+    //get name of which button was clicked
+    let playerChoice = e.target.innerText;
+
+    //get winner of round
+    let winner = playRound(playerChoice, getComputerChoice());
+    adjustScore(winner);
+
+    //display results
+    points.innerText = `Computer: ${computerScore}
+        Player: ${playerScore}`;
+
+    //stop game when player or computer reach 5 points
+    if (playerScore >= 5 || computerScore >= 5) {
+        btns.removeEventListener('click', game);
+
+        if (playerScore > computerScore) {
+            results.innerText = `You won the game!`;
+        } else if (playerScore < computerScore) {
+            results.innerText = `You lost the game :(`;
+        } else {
+            results.innerText = `You tied ~`;
+        }
+
+        //disable buttons
+        rockBtn.disabled = true;
+        paperBtn.disabled = true;
+        scisBtn.disabled = true;
+
+        results.innerText += `\n\nReload page to play again`;
+    }
+}
+
+
+
+///helper functions
+
+//randomly generates a computer selection of rock, paper, or scissors
+function getComputerChoice() {
     //generate random # between 1 and 3
     let randomNum = Math.floor(Math.random() * 3) + 1;
     //if 1
@@ -37,8 +91,8 @@ function getComputerChoice () {
     }
 }
 
-//(2)
-function playRound (playerSelection, computerSelection) {
+//returns winner by comparing player choice to computer selection
+function playRound(playerSelection, computerSelection) {
     //take in playerSelection and computerSelection
     //convert both to upper case
     playerSelection = playerSelection.toUpperCase();
@@ -48,17 +102,17 @@ function playRound (playerSelection, computerSelection) {
         case 'ROCK': {
             switch (computerSelection) {
                 case 'ROCK': {
-                    console.log('Tie! No one wins');
+                    results.textContent = 'Tie! No one wins';
                     return null;
                     break;
                 }
                 case 'PAPER': {
-                    console.log('You lose! Paper beats Rock');
+                    results.textContent = 'You lose! Paper beats Rock';
                     return false;
                     break;
                 }
                 case 'SCISSORS': {
-                    console.log('You win! Rock beats Scissors');
+                    results.textContent = 'You win! Rock beats Scissors';
                     return true;
                     break;
                 }
@@ -68,17 +122,17 @@ function playRound (playerSelection, computerSelection) {
         case 'PAPER': {
             switch (computerSelection) {
                 case 'ROCK': {
-                    console.log('You win! Paper beats Rock');
+                    results.textContent = 'You win! Paper beats Rock';
                     return true;
                     break;
                 }
                 case 'PAPER': {
-                    console.log('Tie! No one wins');
+                    results.textContent = 'Tie! No one wins';
                     return null;
                     break;
                 }
                 case 'SCISSORS': {
-                    console.log('You lose! Scissors beat Paper');
+                    results.textContent = 'You lose! Scissors beat Paper';
                     return false;
                     break;
                 }
@@ -88,17 +142,17 @@ function playRound (playerSelection, computerSelection) {
         case 'SCISSORS': {
             switch (computerSelection) {
                 case 'ROCK': {
-                    console.log('You lose! Rock beats Scissors');
+                    results.textContent = 'You lose! Rock beats Scissors';
                     return false;
                     break;
                 }
                 case 'PAPER': {
-                    console.log('You win! Scissors beat Paper');
+                    results.textContent = 'You win! Scissors beat Paper';
                     return true;
                     break;
                 }
                 case 'SCISSORS': {
-                    console.log('Tie! No one wins');
+                    results.textContent = 'Tie! No one wins';
                     return null;
                     break;
                 }
@@ -107,68 +161,14 @@ function playRound (playerSelection, computerSelection) {
     }
 }
 
-//validation function, is the input one of the three options?
-function validateInput (playerSelection) {
-    playerSelection = playerSelection.toUpperCase();
-
-    if (playerSelection === 'ROCK' || playerSelection === 'PAPER'
-    || playerSelection === 'SCISSORS') {
-        return true;
-    } else {
-        return false;
-    }
-};
-
-//(3)a function that plays 5 rounds of the game and 
-//keeps score and reports a winner or loser at the end
-function game () {
-    //tell player its 5 rounds
-    console.log(`Let's play the best out of 5`)
-    //set playerScore to 0
-    let playerScore = 0;
-    //set computerScore to 0
-    let computerScore = 0;
-    //loop through playRound 5 times
-    for (let i = 0; i < 5; i++) {
-        //get user input
-        let playerSelection = prompt('Rock, Paper, or Scissors?');
-        //check if user input is valid
-        if (!validateInput(playerSelection)) {
-            let valid = false;
-            //while the input is invalid
-            while (!valid) {
-                //keep prompting for a new input
-                playerSelection = prompt('Please pick one of the following:\nRock, Paper, or Scissors?');
-                //update/check if the new input is valid
-                valid = validateInput(playerSelection);
-            }
-        }
-        //get result
-        let winner = playRound(playerSelection, getComputerChoice());
-        //if lose &  not null
-        if ((!winner) && winner !== null) {
-            //add 1 to computer score
-            computerScore++;
-        } //else if winner
-        else if (winner) {
-            //add 1 to player score
-            playerScore++;
-        }
-    }
-
-    //if playerScore > computerScore
-    if (playerScore > computerScore) {
-        //player won the game
-        console.log(`Player: ${playerScore}`, `Computer: ${computerScore}`, `You won the game!`);
-    } else if (playerScore < computerScore) {
-        //player lost the game
-        console.log(`Player: ${playerScore}
-        Computer: ${computerScore}
-        You lost the game :(`);
-    } else {
-        //tied game
-        console.log(`Player: ${playerScore}
-        Computer: ${computerScore}
-        You tied ~`);
+function adjustScore (winner) {
+    //if lose &  not null
+    if ((!winner) && winner !== null) {
+        //add 1 to computer score
+        computerScore++;
+    } //else if winner
+    else if (winner) {
+        //add 1 to player score
+        playerScore++;
     }
 }
